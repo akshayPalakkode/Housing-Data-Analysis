@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import urllib.request
 import tarfile
 import pandas as pd
@@ -22,3 +23,10 @@ def fetch_cal_housing_data(housing_url = DOWNLOAD_ROOT, data_path = DATA_PATH):
     data.columns = cols
     data.to_csv(data_path / "housing_data.csv", index = False)
     print("Done")
+
+def split_test_train(data, test_ratio):
+    shuffled = np.random.permutation(len(data))
+    test_size = int(len(data)*test_ratio)
+    test_indices = shuffled[:test_size]
+    train_indices = shuffled[test_size:]
+    return data.iloc[train_indices], data.iloc[test_indices]
